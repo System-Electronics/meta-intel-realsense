@@ -3,7 +3,6 @@ SECTION = "libs"
 
 require librealsense2.inc
 
-DEPENDS += "${@bb.utils.contains('DISTRO_FEATURES', 'x11 opengl', 'libpng libglu glfw gtk+3', '', d)}"
 
 RDEPENDS:${PN} = "\
     bash \
@@ -11,11 +10,6 @@ RDEPENDS:${PN} = "\
 RDEPENDS:${PN}-examples += "\
     ${PN} \
 "
-RDEPENDS:${PN}-graphical-examples += "\
-    ${PN} \
-    libgl-mesa \
-"
-
 SRC_URI += "\
 	file://0002-Avoid-installing-viewer-presets.patch \
 	file://0003-Remove-libusb-from-targets-list.patch \
@@ -27,8 +21,8 @@ PR = "r0"
 EXTRA_OECMAKE += " \
     -DBUILD_SHARED_LIBS:BOOL=ON \
     -DBUILD_EXAMPLES:BOOL=ON \
-    -DBUILD_GRAPHICAL_EXAMPLES:BOOL=${@bb.utils.contains('DISTRO_FEATURES', 'x11 opengl', 'ON', 'OFF', d)} \
-    -DBUILD_GLSL_EXTENSIONS:BOOL=${@bb.utils.contains('DISTRO_FEATURES', 'x11 opengl', 'ON', 'OFF', d)} \
+    -DBUILD_GRAPHICAL_EXAMPLES:BOOL=OFF \
+    -DBUILD_GLSL_EXTENSIONS:BOOL=OFF \
 "
 
 PACKAGES += "\
@@ -58,28 +52,6 @@ FILES:${PN}-examples = "\
     ${bindir}/rs-pose-and-image \
     ${bindir}/rs-pose-predict \
     ${bindir}/rs-save-to-disk \
-"
-
-FILES:${PN}-graphical-examples = "\
-    ${bindir}/rs-align \
-    ${bindir}/rs-align-advanced \
-    ${bindir}/rs-align-gl \
-    ${bindir}/rs-ar-advanced \
-    ${bindir}/rs-ar-basic \
-    ${bindir}/rs-callback \
-    ${bindir}/rs-capture \
-    ${bindir}/rs-gl \
-    ${bindir}/rs-hdr \
-    ${bindir}/rs-measure \
-    ${bindir}/rs-motion \
-    ${bindir}/rs-multicam \
-    ${bindir}/rs-pointcloud \
-    ${bindir}/rs-post-processing \
-    ${bindir}/rs-record-playback \
-    ${bindir}/rs-sensor-control \
-    ${bindir}/rs-software-device \
-    ${bindir}/rs-tracking-and-depth \
-    ${bindir}/rs-trajectory \
 "
 
 FILES:${PN}-tools = "\
